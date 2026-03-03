@@ -3,120 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WolfVox™ | Cloud Forms</title>
+    <title>WolfVox™ | Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* BASE THEME (RENDER.COM INSPIRED) */
         :root {
-            --bg: #030303;
-            --card-bg: #0a0a0c;
-            --border: #1a1a1e;
+            --bg: #060608;
+            --header: #111113;
+            --card-bg: #161618;
+            --border: #2d2d30;
             --accent: #7a6cff;
-            --text: #ffffff;
-            --dim: #88888b;
+            --text-main: #eeeeee;
+            --text-dim: #a1a1aa;
         }
 
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; }
-        
-        /* HEADER SECTION */
-        header { 
-            height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; border-bottom: 1px solid var(--border);
-            background: radial-gradient(circle at center, #111 0%, #030303 100%);
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text-main); margin: 0; }
+
+        /* NAVBARS (EXACT MATCH TO INDEX) */
+        nav { display: flex; align-items: center; padding: 12px 30px; background: var(--header); border-bottom: 1px solid var(--border); justify-content: space-between; }
+        .sub-nav { display: flex; gap: 15px; padding: 10px 30px; background: var(--header); border-bottom: 1px solid var(--border); }
+        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; }
+        .sub-btn.active { color: var(--text-main); border-bottom: 2px solid var(--accent); }
+
+        /* HERO SECTION */
+        .hero { 
+            padding: 100px 20px; text-align: center; 
+            background: radial-gradient(circle at top, #1a1a2e 0%, #060608 100%);
+        }
+        .hero h1 { font-size: 56px; margin: 0; letter-spacing: -2px; }
+        .hero p { color: var(--text-dim); font-size: 18px; margin: 20px 0 40px; }
+
+        /* THE RENDER BUTTON (Left-to-Right Slide) */
+        .render-btn {
+            position: relative;
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent);
+            background: transparent;
+            border: 1px solid var(--accent);
+            cursor: pointer;
+            overflow: hidden;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        h1 { font-size: 64px; margin: 0; letter-spacing: -2px; }
-        p.hero-text { color: var(--dim); font-size: 18px; max-width: 600px; margin: 20px 0; }
-
-        /* THE RENDER BUTTON */
-        .cta-btn {
-            position: relative; padding: 14px 32px; font-size: 16px;
-            background: linear-gradient(to right, white 50%, transparent 50%);
-            background-size: 200% 100%; background-position: right bottom;
-            border: 1px solid var(--accent); color: var(--accent);
-            cursor: pointer; font-weight: bold; transition: all 0.4s ease-in-out;
-            text-decoration: none; border-radius: 4px;
-        }
-        .cta-btn:hover { background-position: left bottom; color: black; border-color: white; }
-
-        /* INFINITE GRID */
-        #formsGrid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 25px; padding: 50px; max-width: 1400px; margin: 0 auto;
+        .render-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%; /* Start hidden on left */
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+            z-index: -1;
         }
 
-        .form-card { 
+        .render-btn:hover {
+            color: #000;
+            border-color: #fff;
+        }
+
+        .render-btn:hover::before {
+            left: 0; /* Slide in to cover */
+        }
+
+        /* The Exit logic: When mouse leaves, it pushes further to the right */
+        .render-btn:not(:hover)::before {
+            left: 100%; /* Exit to right */
+            transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+        }
+
+        /* FEATURE BOXES */
+        .box-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; max-width: 1100px; margin: 50px auto; padding: 0 20px;
+        }
+        .info-box { 
             background: var(--card-bg); border: 1px solid var(--border); 
-            padding: 25px; border-radius: 12px; transition: transform 0.3s;
+            padding: 30px; border-radius: 12px; transition: 0.3s;
         }
-        .form-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .form-card h3 { margin: 0 0 10px 0; font-size: 20px; }
-        .form-card p { color: var(--dim); font-size: 14px; line-height: 1.5; }
+        .info-box:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .info-box i { font-size: 24px; color: var(--accent); margin-bottom: 15px; }
+        .info-box h3 { margin: 0 0 10px; }
+        .info-box p { color: var(--text-dim); font-size: 14px; line-height: 1.6; margin: 0; }
 
-        #loading { text-align: center; padding: 40px; color: var(--accent); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Wolf<span style="color:var(--accent)">Vox</span></h1>
-    <p class="hero-text">The next generation of cloud-based developer forms. Built for scale, styled for clarity.</p>
-    <a href="index.html" class="cta-btn">GET STARTED</a>
-</header>
-
-<div id="formsGrid">
+<nav>
+    <h2 style="margin:0; font-size: 22px;">Wolf<span style="color:var(--accent)">Vox</span></h2>
+    <div style="display: flex; gap: 20px; align-items: center;">
+        <span style="color: var(--text-dim); font-size: 13px;">Enterprise Cloud</span>
+        <button class="render-btn" style="padding: 8px 20px; font-size: 12px;" onclick="location.href='index.html'">Sign In</button>
     </div>
+</nav>
 
-<div id="loading"><i class="fas fa-spinner fa-spin"></i> Loading more forms...</div>
+<div class="sub-nav">
+    <button class="sub-btn active"><i class="fa-solid fa-house"></i> Home</button>
+    <button class="sub-btn" onclick="location.href='index.html'"><i class="fa-solid fa-code"></i> Forms</button>
+    <button class="sub-btn" onclick="location.href='Market.html'"><i class="fa-solid fa-shop"></i> Marketplace</button>
+    <button class="sub-btn" onclick="location.href='Docs.html'"><i class="fa-solid fa-book"></i> Docs</button>
+</div>
 
-<script>
-    const API = "https://backhand-forms.onrender.com/api/forms";
-    let allData = [];
-    let displayedCount = 0;
-    const itemsPerPage = 6;
+<section class="hero">
+    <h1>Experience Wolf<span style="color:var(--accent)">Vox</span></h1>
+    <p>Professional form management and cloud plugins for modern developers.</p>
+    <a href="index.html" class="render-btn">Get Started for Free</a>
+</section>
 
-    async function fetchAllForms() {
-        const res = await fetch(API);
-        allData = await res.json();
-        loadMore(); // Initial load
-    }
-
-    function loadMore() {
-        const grid = document.getElementById('formsGrid');
-        const nextBatch = allData.slice(displayedCount, displayedCount + itemsPerPage);
-        
-        nextBatch.forEach(form => {
-            const card = document.createElement('div');
-            card.className = 'form-card';
-            card.innerHTML = `
-                <h3>${form.title}</h3>
-                <p>${form.content.substring(0, 100)}...</p>
-                <div style="margin-top:20px; color:var(--accent); font-size:12px; font-weight:bold;">
-                    ${form.date || 'RECENT'} • VIEW DETAILS
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-
-        displayedCount += itemsPerPage;
-        
-        // Hide loader if no more data
-        if (displayedCount >= allData.length) {
-            document.getElementById('loading').style.display = 'none';
-        }
-    }
-
-    // INFINITE SCROLL LOGIC
-    window.onscroll = function() {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
-            if (displayedCount < allData.length) {
-                loadMore();
-            }
-        }
-    };
-
-    window.onload = fetchAllForms;
-</script>
+<div class="box-grid">
+    <div class="info-box">
+        <i class="fa-solid fa-bolt"></i>
+        <h3>Instant Publishing</h3>
+        <p>Deploy your forms to our high-speed Render backend in seconds. No configuration required.</p>
+    </div>
+    <div class="info-box">
+        <i class="fa-solid fa-puzzle-piece"></i>
+        <h3>Plugin Ecosystem</h3>
+        <p>Unlock colors, slots, and advanced media with our verification-based marketplace.</p>
+    </div>
+    <div class="info-box">
+        <i class="fa-solid fa-chart-pie"></i>
+        <h3>Advanced Insights</h3>
+        <p>Track your form growth and user engagement with real-time Chart.js integration.</p>
+    </div>
+</div>
 
 </body>
 </html>
