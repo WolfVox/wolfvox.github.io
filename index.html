@@ -17,121 +17,133 @@
         }
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--text-main); margin: 0; }
+        body { background: var(--bg); color: var(--text-main); margin: 0; overflow-x: hidden; }
 
-        /* NAVBARS (EXACT MATCH TO INDEX) */
+        /* INFINITE SCAN BAR (TOP) */
+        .scan-line {
+            width: 100%; height: 2px; background: var(--border); position: relative; overflow: hidden;
+        }
+        .scan-line::after {
+            content: ""; position: absolute; left: -150px; width: 150px; height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: scan 3s infinite linear;
+        }
+        @keyframes scan { 0% { left: -150px; } 100% { left: 100%; } }
+
+        /* NAVBARS (MATCHING INDEX) */
         nav { display: flex; align-items: center; padding: 12px 30px; background: var(--header); border-bottom: 1px solid var(--border); justify-content: space-between; }
         .sub-nav { display: flex; gap: 15px; padding: 10px 30px; background: var(--header); border-bottom: 1px solid var(--border); }
-        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; }
+        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; }
         .sub-btn.active { color: var(--text-main); border-bottom: 2px solid var(--accent); }
+        .sub-btn:hover { color: white; }
 
         /* HERO SECTION */
         .hero { 
-            padding: 100px 20px; text-align: center; 
-            background: radial-gradient(circle at top, #1a1a2e 0%, #060608 100%);
+            padding: 120px 20px; text-align: center; 
+            background: radial-gradient(circle at top, #13131f 0%, #060608 100%);
         }
-        .hero h1 { font-size: 56px; margin: 0; letter-spacing: -2px; }
-        .hero p { color: var(--text-dim); font-size: 18px; margin: 20px 0 40px; }
+        .hero h1 { font-size: clamp(40px, 8vw, 72px); margin: 0; letter-spacing: -3px; font-weight: 800; }
+        .hero p { color: var(--text-dim); font-size: 18px; margin: 24px auto 48px; max-width: 600px; line-height: 1.6; }
 
-        /* THE RENDER BUTTON (Left-to-Right Slide) */
+        /* RENDER BUTTON (Left-to-Right Swipe) */
         .render-btn {
             position: relative;
-            padding: 14px 40px;
-            font-size: 16px;
+            padding: 16px 42px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--accent);
             background: transparent;
             border: 1px solid var(--accent);
             cursor: pointer;
             overflow: hidden;
-            transition: color 0.3s ease, border-color 0.3s ease;
+            transition: color 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-decoration: none;
             display: inline-block;
+            z-index: 1;
         }
 
         .render-btn::before {
             content: "";
             position: absolute;
             top: 0;
-            left: -100%; /* Start hidden on left */
+            left: -100%; /* Start outside left */
             width: 100%;
             height: 100%;
-            background: #fff;
-            transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+            background: #ffffff;
             z-index: -1;
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .render-btn:hover {
-            color: #000;
-            border-color: #fff;
+        .render-btn:hover { color: #000; border-color: #fff; }
+        .render-btn:hover::before { transform: translateX(100%); }
+
+        /* Pushes bar out to the right when mouse leaves */
+        .render-btn::before { transform: translateX(0); }
+        .render-btn:not(:hover)::before { animation: swipeOut 0.4s forwards; }
+
+        @keyframes swipeOut {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(200%); }
         }
 
-        .render-btn:hover::before {
-            left: 0; /* Slide in to cover */
-        }
-
-        /* The Exit logic: When mouse leaves, it pushes further to the right */
-        .render-btn:not(:hover)::before {
-            left: 100%; /* Exit to right */
-            transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
-        }
-
-        /* FEATURE BOXES */
+        /* BOX GRID */
         .box-grid { 
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 20px; max-width: 1100px; margin: 50px auto; padding: 0 20px;
+            gap: 20px; max-width: 1200px; margin: -40px auto 100px; padding: 0 20px;
         }
         .info-box { 
             background: var(--card-bg); border: 1px solid var(--border); 
-            padding: 30px; border-radius: 12px; transition: 0.3s;
+            padding: 40px; border-radius: 12px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .info-box:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .info-box i { font-size: 24px; color: var(--accent); margin-bottom: 15px; }
-        .info-box h3 { margin: 0 0 10px; }
-        .info-box p { color: var(--text-dim); font-size: 14px; line-height: 1.6; margin: 0; }
+        .info-box:hover { border-color: var(--accent); transform: translateY(-10px); background: #1c1c20; }
+        .info-box i { font-size: 28px; color: var(--accent); margin-bottom: 20px; }
+        .info-box h3 { margin: 0 0 12px; font-size: 20px; }
+        .info-box p { color: var(--text-dim); font-size: 15px; line-height: 1.6; margin: 0; }
 
     </style>
 </head>
 <body>
 
+<div class="scan-line"></div>
+
 <nav>
-    <h2 style="margin:0; font-size: 22px;">Wolf<span style="color:var(--accent)">Vox</span></h2>
+    <h2 style="margin:0; font-size: 22px; cursor: default;">Wolf<span style="color:var(--accent)">Vox</span></h2>
     <div style="display: flex; gap: 20px; align-items: center;">
-        <span style="color: var(--text-dim); font-size: 13px;">Enterprise Cloud</span>
-        <button class="render-btn" style="padding: 8px 20px; font-size: 12px;" onclick="location.href='index.html'">Sign In</button>
+        <a href="/Forms/index.html" class="render-btn" style="padding: 10px 25px; font-size: 11px;">Sign In</a>
     </div>
 </nav>
 
 <div class="sub-nav">
-    <button class="sub-btn active"><i class="fa-solid fa-house"></i> Home</button>
-    <button class="sub-btn" onclick="location.href='index.html'"><i class="fa-solid fa-code"></i> Forms</button>
-    <button class="sub-btn" onclick="location.href='Market.html'"><i class="fa-solid fa-shop"></i> Marketplace</button>
-    <button class="sub-btn" onclick="location.href='Docs.html'"><i class="fa-solid fa-book"></i> Docs</button>
+    <a href="index.html" class="sub-btn active"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="/Forms/index.html" class="sub-btn"><i class="fa-solid fa-code"></i> Forms</a>
+    <a href="/Forms/Market.html" class="sub-btn"><i class="fa-solid fa-shop"></i> Market</a>
+    <a href="/Forms/Docs.html" class="sub-btn"><i class="fa-solid fa-book"></i> Docs</a>
+    <a href="/Forms/Insights.html" class="sub-btn"><i class="fa-solid fa-chart-line"></i> Insights</a>
 </div>
 
 <section class="hero">
-    <h1>Experience Wolf<span style="color:var(--accent)">Vox</span></h1>
-    <p>Professional form management and cloud plugins for modern developers.</p>
-    <a href="index.html" class="render-btn">Get Started for Free</a>
+    <h1>Build. Deploy. <span style="color:white">Connect.</span></h1>
+    <p>The ultimate repository for developer-centric forms. Integrated with automated verification and real-time insights.</p>
+    <a href="/Forms/index.html" class="render-btn">Get Started</a>
 </section>
 
 <div class="box-grid">
     <div class="info-box">
-        <i class="fa-solid fa-bolt"></i>
-        <h3>Instant Publishing</h3>
-        <p>Deploy your forms to our high-speed Render backend in seconds. No configuration required.</p>
+        <i class="fa-solid fa-terminal"></i>
+        <h3>Forms Repository</h3>
+        <p>A centralized hub to browse, search, and interact with community-driven data structures.</p>
     </div>
     <div class="info-box">
-        <i class="fa-solid fa-puzzle-piece"></i>
-        <h3>Plugin Ecosystem</h3>
-        <p>Unlock colors, slots, and advanced media with our verification-based marketplace.</p>
+        <i class="fa-solid fa-layer-group"></i>
+        <h3>Plugin Marketplace</h3>
+        <p>Enhance your creation experience with Chroma+ and Expansion slots via human-verification.</p>
     </div>
     <div class="info-box">
-        <i class="fa-solid fa-chart-pie"></i>
-        <h3>Advanced Insights</h3>
-        <p>Track your form growth and user engagement with real-time Chart.js integration.</p>
+        <i class="fa-solid fa-shield-halved"></i>
+        <h3>Safe & Secure</h3>
+        <p>Professional content rules and automated filtering ensure a clean environment for all users.</p>
     </div>
 </div>
 
