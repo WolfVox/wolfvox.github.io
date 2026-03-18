@@ -2,35 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
-
     <link rel="icon" type="image/png" sizes="48x48" href="/WolfVoxLogo.png">
-
     <link rel="apple-touch-icon" href="/WolfVoxLogo.png">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WolfVox</title>
     <meta name="description" content="Official site for WolfVox™ - [Devforms for developers]">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        
         :root {
-            --bg: #060608;
-            --header: #111113;
-            --card-bg: #161618;
+            --bg: #0e0e0e;
+            --header: #0f0f0f;
+            --card-bg: #000000;
             --border: #2d2d30;
-            --accent: #7a6cff;
+            --accent: #acacac;
             --text-main: #eeeeee;
             --text-dim: #a1a1aa;
+            --error: #ff4d4d;
         }
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: var(--bg); color: var(--text-main); margin: 0; overflow-x: hidden; }
 
-        /* INFINITE SCAN BAR (TOP) */
-        .scan-line {
-            width: 100%; height: 2px; background: var(--border); position: relative; overflow: hidden;
-        }
+        /* INFINITE SCAN BAR */
+        .scan-line { width: 100%; height: 2px; background: var(--border); position: relative; overflow: hidden; }
         .scan-line::after {
             content: ""; position: absolute; left: -150px; width: 150px; height: 100%;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
@@ -38,7 +32,7 @@
         }
         @keyframes scan { 0% { left: -150px; } 100% { left: 100%; } }
 
-        /* NAVBARS (MATCHING INDEX) */
+        /* NAVBARS */
         nav { display: flex; align-items: center; padding: 12px 30px; background: var(--header); border-bottom: 1px solid var(--border); justify-content: space-between; }
         .sub-nav { display: flex; gap: 15px; padding: 10px 30px; background: var(--header); border-bottom: 1px solid var(--border); }
         .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; }
@@ -46,70 +40,41 @@
         .sub-btn:hover { color: white; }
 
         /* HERO SECTION */
-        .hero { 
-            padding: 120px 20px; text-align: center; 
-            background: radial-gradient(circle at top, #13131f 0%, #060608 100%);
-        }
+        .hero { padding: 120px 20px; text-align: center; background: radial-gradient(circle at top, #13131f 0%, #060608 100%); }
         .hero h1 { font-size: clamp(40px, 8vw, 72px); margin: 0; letter-spacing: -3px; font-weight: 800; }
         .hero p { color: var(--text-dim); font-size: 18px; margin: 24px auto 48px; max-width: 600px; line-height: 1.6; }
 
-        /* RENDER BUTTON (Left-to-Right Swipe) */
+        /* BUTTONS */
         .render-btn {
-            position: relative;
-            padding: 16px 42px;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--accent);
-            background: transparent;
-            border: 1px solid var(--accent);
-            cursor: pointer;
-            overflow: hidden;
-            transition: color 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-decoration: none;
-            display: inline-block;
-            z-index: 1;
+            position: relative; padding: 16px 42px; font-size: 14px; font-weight: 700; color: var(--accent);
+            background: transparent; border: 1px solid var(--accent); cursor: pointer; overflow: hidden;
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px; text-decoration: none;
+            display: inline-block; z-index: 1;
+            border-radius: 25px;
         }
-
         .render-btn::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%; /* Start outside left */
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            z-index: -1;
-            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: #ffffff; z-index: -1; transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
         }
-
         .render-btn:hover { color: #000; border-color: #fff; }
         .render-btn:hover::before { transform: translateX(100%); }
 
-        /* Pushes bar out to the right when mouse leaves */
-        .render-btn::before { transform: translateX(0); }
-        .render-btn:not(:hover)::before { animation: swipeOut 0.4s forwards; }
-
-        @keyframes swipeOut {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(200%); }
+        /* USER PROFILE STYLING */
+        .user-pill {
+            display: flex; align-items: center; gap: 10px; background: var(--card-bg);
+            padding: 5px 15px; border-radius: 30px; border: 1px solid var(--border);
         }
+        .user-pill img { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--accent); }
+        .logout-link { color: var(--error); font-size: 11px; text-decoration: none; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .logout-link:hover { text-decoration: underline; }
 
         /* BOX GRID */
-        .box-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 20px; max-width: 1200px; margin: -40px auto 100px; padding: 0 20px;
-        }
-        .info-box { 
-            background: var(--card-bg); border: 1px solid var(--border); 
-            padding: 40px; border-radius: 12px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: -40px auto 100px; padding: 0 20px; }
+        .info-box { background: var(--card-bg); border: 1px solid var(--border); padding: 40px; border-radius: 12px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .info-box:hover { border-color: var(--accent); transform: translateY(-10px); background: #1c1c20; }
         .info-box i { font-size: 28px; color: var(--accent); margin-bottom: 20px; }
         .info-box h3 { margin: 0 0 12px; font-size: 20px; }
         .info-box p { color: var(--text-dim); font-size: 15px; line-height: 1.6; margin: 0; }
-
     </style>
 </head>
 <body>
@@ -118,8 +83,8 @@
 
 <nav>
     <h2 style="margin:0; font-size: 22px; cursor: default;">Wolf<span style="color:var(--accent)">Vox</span></h2>
-    <div style="display: flex; gap: 20px; align-items: center;">
-        <a href="/Forms" class="render-btn" style="padding: 10px 25px; font-size: 11px;">Sign In</a>
+    <div id="navAuthArea" style="display: flex; gap: 20px; align-items: center;">
+        <a href="login.html" class="render-btn" style="padding: 10px 25px; font-size: 11px;">Sign In</a>
     </div>
 </nav>
 
@@ -133,7 +98,7 @@
 
 <section class="hero">
     <h1>Build. Deploy. <span style="color:white">Connect.</span></h1>
-    <p>The ultimate repository for developer-centric forms. Integrated with automated verification and real-time insights.</p>
+    <p>The Form sharing site.</p>
     <a href="/Forms" class="render-btn">Get Started</a>
 </section>
 
@@ -154,6 +119,32 @@
         <p>Professional content rules and automated filtering ensure a clean environment for all users.</p>
     </div>
 </div>
+
+<script>
+    function updateNavbar() {
+        const user = JSON.parse(localStorage.getItem('wv_user'));
+        const authArea = document.getElementById('navAuthArea');
+
+        if (user) {
+            // If logged in, show User Info and Logout link
+            authArea.innerHTML = `
+                <div class="user-pill">
+                    <img src="${user.img}" alt="User">
+                    <span style="font-size: 12px; font-weight: 600;">${user.name.split(' ')[0]}</span>
+                </div>
+                <a onclick="logout()" class="logout-link">Logout</a>
+            `;
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('wv_user');
+        location.reload(); // Refresh the page to show the "Sign In" button again
+    }
+
+    // Run on load
+    updateNavbar();
+</script>
 
 </body>
 </html>
