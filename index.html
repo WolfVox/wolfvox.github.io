@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,7 @@
     <style>
         :root {
             --bg: #0e0e0e;
+            --topheader : rgb(0, 0, 0) ;
             --header: #0f0f0f;
             --card-bg: #000000;
             --border: #2d2d30;
@@ -33,7 +35,7 @@
         @keyframes scan { 0% { left: -150px; } 100% { left: 100%; } }
 
         /* NAVBARS */
-        nav { display: flex; align-items: center; padding: 12px 30px; background: var(--header); border-bottom: 1px solid var(--border); justify-content: space-between; }
+        nav { display: flex; align-items: center; padding: 12px 30px; background: var(--topheader); border-bottom: 1px solid var(--border); justify-content: space-between; }
         .sub-nav { display: flex; gap: 15px; padding: 10px 30px; background: var(--header); border-bottom: 1px solid var(--border); }
         .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; }
         .sub-btn.active { color: var(--text-main); border-bottom: 2px solid var(--accent); }
@@ -82,24 +84,30 @@
 <div class="scan-line"></div>
 
 <nav>
-    <h2 style="margin:0; font-size: 22px; cursor: default;">Wolf<span style="color:var(--accent)">Vox</span></h2>
+    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+    <img style=" margin-right:15px;" src="https://github.com/WolfVox/wolfvox.github.io/blob/main/WolfVoxLogo.png?raw=true" alt="?" height="30px" width="30px" >
+    <h2 style="margin:0; font-size: 22px; cursor: default;">Wolf<span style="color:rgb(255, 255, 255)">Vox</span></h2>
+    </div>
     <div id="navAuthArea" style="display: flex; gap: 20px; align-items: center;">
-        <a href="/signin" class="render-btn" style="padding: 10px 25px; font-size: 11px;">Sign In</a>
+        <a href="/CloudHosting"  class="render-btn" style="padding: 10px 25px; font-size: 11px;">New : <i class="fa-solid fa-tower-broadcast"></i> Host website on wolfcloud</a>
+        <a href="/signin" class="render-btn" style="padding: 10px 25px; font-size: 11px;"> <i class="fa-solid fa-right-to-bracket"></i> Sign In</a>
     </div>
 </nav>
 
 <div class="sub-nav">
     <a href="/" class="sub-btn active"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="https://hub-wolfvox.github.io" class="sub-btn"><i class="fa-solid fa-network-wired"></i> Hub</a>
     <a href="/Forms" class="sub-btn"><i class="fa-solid fa-code"></i> Forms</a>
-    <a href="/Forms/Market" class="sub-btn"><i class="fa-solid fa-shop"></i> Market</a>
-    <a href="/Forms/Docs" class="sub-btn"><i class="fa-solid fa-book"></i> Docs</a>
-    <a href="/Forms/Insights" class="sub-btn"><i class="fa-solid fa-chart-line"></i> Insights</a>
+    <a href="/CloudHosting" class="sub-btn"><i class="fa-solid fa-tower-broadcast"></i> Hosting</a>
+    <a href="/signin" class="sub-btn"><i class="fa-solid fa-right-to-bracket"></i> Log in</a>
+    
 </div>
 
 <section class="hero">
     <h1>Build. Deploy. <span style="color:white">Connect.</span></h1>
     <p>The Form sharing site.</p>
-    <a href="/Forms" class="render-btn">Get Started</a>
+    <a href="/Forms" class="render-btn"> Get Started</a>
+    
 </section>
 
 <div class="box-grid">
