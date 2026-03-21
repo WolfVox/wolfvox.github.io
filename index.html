@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,44 +8,56 @@
     <title>WolfVox</title>
     <meta name="description" content="Official site for WolfVox™ - [Devforms for developers]">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg: #0e0e0e;
+            --bg: #000000;
             --topheader : rgb(0, 0, 0) ;
-            --header: #0f0f0f;
+            --header: #000000;
             --card-bg: #000000;
             --border: #2d2d30;
             --accent: #acacac;
             --text-main: #eeeeee;
             --text-dim: #a1a1aa;
             --error: #ff4d4d;
+            /* Graph specific colors */
+            --purple-glow: #a855f7;
+            --pink-glow: #ec4899;
         }
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--text-main); margin: 0; overflow-x: hidden; }
-
-        /* INFINITE SCAN BAR */
-        .scan-line { width: 100%; height: 2px; background: var(--border); position: relative; overflow: hidden; }
-        .scan-line::after {
-            content: ""; position: absolute; left: -150px; width: 150px; height: 100%;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            animation: scan 3s infinite linear;
+        body { 
+            background: var(--bg); 
+            color: var(--text-main); 
+            margin: 0; 
+            overflow-x: hidden; 
+            transition: background 0.4s ease; /* For mouse glow */
         }
-        @keyframes scan { 0% { left: -150px; } 100% { left: 100%; } }
 
         /* NAVBARS */
-        nav { display: flex; align-items: center; padding: 12px 30px; background: var(--topheader); border-bottom: 1px solid var(--border); justify-content: space-between; }
+        nav { display: flex; align-items: center; padding: 12px 30px; background: var(--topheader); border-bottom: 1px solid var(--border); justify-content: space-between; position: relative; z-index: 1000; }
         .sub-nav { display: flex; gap: 15px; padding: 10px 30px; background: var(--header); border-bottom: 1px solid var(--border); }
-        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; }
+        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; transition: 0.3s; }
         .sub-btn.active { color: var(--text-main); border-bottom: 2px solid var(--accent); }
         .sub-btn:hover { color: white; }
 
         /* HERO SECTION */
-        .hero { padding: 120px 20px; text-align: center; background: radial-gradient(circle at top, #13131f 0%, #060608 100%); }
-        .hero h1 { font-size: clamp(40px, 8vw, 72px); margin: 0; letter-spacing: -3px; font-weight: 800; }
+.hero { 
+    padding: 120px 20px; 
+    text-align: center; 
+    position: relative; 
+    z-index: 10;
+    
+    /* Layered gradients: Top-Left, Top-Right, Bottom-Left, Bottom-Right, and Center */
+    background-image: 
+        radial-gradient(circle at 0% 0%, #1b1b3f 0%, transparent 40%),
+        radial-gradient(circle at 100% 50%, #1a1a40 0%, transparent 40%);
+
+}
+        .hero h1 { font-size: clamp(40px, 8vw, 72px); margin: 0; letter-spacing: -3px; font-weight: 800; min-height: 1.2em; }
         .hero p { color: var(--text-dim); font-size: 18px; margin: 24px auto 48px; max-width: 600px; line-height: 1.6; }
 
-        /* BUTTONS */
+        /* BUTTONS (Original White-Slide Animation) */
         .render-btn {
             position: relative; padding: 16px 42px; font-size: 14px; font-weight: 700; color: var(--accent);
             background: transparent; border: 1px solid var(--accent); cursor: pointer; overflow: hidden;
@@ -61,9 +72,9 @@
         .render-btn:hover { color: #000; border-color: #fff; }
         .render-btn:hover::before { transform: translateX(100%); }
 
-        /* USER PROFILE STYLING */
+        /* USER PROFILE STYLING (Restored) */
         .user-pill {
-            display: flex; align-items: center; gap: 10px; background: var(--card-bg);
+            display: flex; align-items: center; gap: 10px; background: #111;
             padding: 5px 15px; border-radius: 30px; border: 1px solid var(--border);
         }
         .user-pill img { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--accent); }
@@ -71,25 +82,61 @@
         .logout-link:hover { text-decoration: underline; }
 
         /* BOX GRID */
-        .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: -40px auto 100px; padding: 0 20px; }
+        .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: -40px auto 40px; padding: 0 20px; position: relative; z-index: 20; }
         .info-box { background: var(--card-bg); border: 1px solid var(--border); padding: 40px; border-radius: 12px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .info-box:hover { border-color: var(--accent); transform: translateY(-10px); background: #1c1c20; }
-        .info-box i { font-size: 28px; color: var(--accent); margin-bottom: 20px; }
+        .info-box:hover { border-color: var(--purple-glow); transform: translateY(-10px); background: #0a0a0c; }
+        .info-box i { font-size: 28px; color: var(--purple-glow); margin-bottom: 20px; }
         .info-box h3 { margin: 0 0 12px; font-size: 20px; }
         .info-box p { color: var(--text-dim); font-size: 15px; line-height: 1.6; margin: 0; }
+
+        /* ANALYTICS SECTION (Alive & Floating) */
+        .analytics-section {
+            display: flex; max-width: 1200px; margin: 40px auto 100px; padding: 0 20px; gap: 20px;
+            perspective: 1000px; animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotateX(0); } 50% { transform: translateY(-12px) rotateX(1deg); } }
+
+        .graph-box {
+            flex: 2; background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 30px; height: 400px; position: relative;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 30px 30px; box-shadow: 0 0 30px rgba(168, 85, 247, 0.05);
+        }
+        .scan-line { width: 100%; height: 1px; background: rgba(168, 85, 247, 0.2); position: absolute; top: 0; left: 0; animation: scan 5s linear infinite; pointer-events: none; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+        .graph-textbox { flex: 1; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; }
+        .graph-textbox textarea {
+            flex-grow: 1; background: rgba(0,0,0,0.7); border: 1px solid var(--border); color: var(--purple-glow);
+            padding: 15px; font-family: 'Courier New', monospace; resize: none; outline: none; border-radius: 8px; margin-top: 15px;
+            font-size: 12px; text-shadow: 0 0 5px rgba(168, 85, 247, 0.2);
+        }
+
+        /* SITEMAP & FOOTER (Restored Original) */
+        .sitemap-container {
+            max-width: 100%; margin-top: 20px auto; background: var(--bg); border-top: rgba(255, 255, 255, 0.1) solid 1px;
+            padding: 60px 40px; display: flex; justify-content: space-evenly; align-items: center;
+        }
+        .sitemap-col h4 { margin-top: 0; color: #fff; }
+        .sitemap-col a { display: block; color: var(--accent); text-decoration: none; margin-bottom: 8px; font-size: 14px; }
+        .sitemap-col a:hover { color: #fff; }
+        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; background-color: #000 ; border-top: 1px solid var(--border); }
+
+        /* Typing Cursor */
+        .cursor { color: var(--purple-glow); font-weight: 200; animation: blink 1s infinite; margin-left: 5px; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        @media (max-width: 850px) { .analytics-section { flex-direction: column; } }
     </style>
 </head>
 <body>
 
-<div class="scan-line"></div>
-
 <nav>
     <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-    <img style=" margin-right:15px;" src="https://github.com/WolfVox/wolfvox.github.io/blob/main/WolfVoxLogo.png?raw=true" alt="?" height="30px" width="30px" >
-    <h2 style="margin:0; font-size: 22px; cursor: default;">Wolf<span style="color:rgb(255, 255, 255)">Vox</span></h2>
+        <img style=" margin-right:15px;" src="https://github.com/WolfVox/wolfvox.github.io/blob/main/WolfVoxLogo.png?raw=true" alt="?" height="30px" width="30px" >
+        <h2 style="margin:0; font-size: 22px; cursor: default;">Wolf<span style="color:rgb(255, 255, 255)">Vox</span></h2>
     </div>
     <div id="navAuthArea" style="display: flex; gap: 20px; align-items: center;">
-        <a href="/CloudHosting"  class="render-btn" style="padding: 10px 25px; font-size: 11px;">New : <i class="fa-solid fa-tower-broadcast"></i> Host website on wolfcloud</a>
+        <a href="/CloudHosting" class="render-btn" style="padding: 10px 25px; font-size: 11px;">New : <i class="fa-solid fa-tower-broadcast"></i> Host website on wolfcloud</a>
         <a href="/signin" class="render-btn" style="padding: 10px 25px; font-size: 11px;"> <i class="fa-solid fa-right-to-bracket"></i> Sign In</a>
     </div>
 </nav>
@@ -100,14 +147,12 @@
     <a href="/Forms" class="sub-btn"><i class="fa-solid fa-code"></i> Forms</a>
     <a href="/CloudHosting" class="sub-btn"><i class="fa-solid fa-tower-broadcast"></i> Hosting</a>
     <a href="/signin" class="sub-btn"><i class="fa-solid fa-right-to-bracket"></i> Log in</a>
-    
 </div>
 
 <section class="hero">
-    <h1>Build. Deploy. <span style="color:white">Connect.</span></h1>
-    <p>The Form sharing site.</p>
+    <h1><span id="typed-text"></span><span class="cursor">|</span></h1>
+    <p>Deploy your individual site. Publish forms. <br> We can handle up to 25,000 sites and forms</p>
     <a href="/Forms" class="render-btn"> Get Started</a>
-    
 </section>
 
 <div class="box-grid">
@@ -128,13 +173,37 @@
     </div>
 </div>
 
+<div class="analytics-section" >
+    <div class="graph-box" >
+        <div class="scan-line"></div>
+        <h3 style="margin: 0 0 20px 0; font-size: 11px; text-transform: uppercase; color: var(--purple-glow); letter-spacing: 2px;"> > Real-Time Performance...</h3>
+        <canvas id="glowingChart"></canvas>
+    </div>
+    <div class="graph-textbox">
+        <h3 style="margin:0; font-size: 14px; color: var(--accent);">DEPLOYMENT LOGS</h3>
+        <textarea readonly id="logBox">> Initializing Analytics...
+> Connection Secure.
+> Watching Node: wolfvox-main
+> Latency: 14ms</textarea>
+    </div>
+</div>
+
+<div class="sitemap-container">
+    <div class="SiteMapImage"><img src="https://github.com/WolfVox/wolfvox.github.io/blob/main/WolfVoxLogo.png?raw=true" alt="?" height="125px" width="125px"></div>
+    <div class="sitemap-col"><h4>Product</h4><a href="#">Forms</a><a href="#">Analytics</a></div>
+    <div class="sitemap-col"><h4>Resources</h4><a href="#">Docs</a><a href="#">Hub</a></div>
+    <div class="sitemap-col"><h4>Community</h4><a href="#">Discord</a><a href="#">Twitter</a></div>
+    <div class="sitemap-col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+</div>
+
+<footer>&copy; 2026 WolfVoxCo.</footer>
+
 <script>
+    // 1. AUTH & NAVBAR LOGIC (Restored Original)
     function updateNavbar() {
         const user = JSON.parse(localStorage.getItem('wv_user'));
         const authArea = document.getElementById('navAuthArea');
-
         if (user) {
-            // If logged in, show User Info and Logout link
             authArea.innerHTML = `
                 <div class="user-pill">
                     <img src="${user.img}" alt="User">
@@ -144,14 +213,115 @@
             `;
         }
     }
-
     function logout() {
         localStorage.removeItem('wv_user');
-        location.reload(); // Refresh the page to show the "Sign In" button again
+        location.reload();
     }
-
-    // Run on load
     updateNavbar();
+
+    // 2. MOUSE GLOW (New Interaction)
+
+
+    // 3. TYPING ANIMATION (Original Phrases)
+    const textElement = document.getElementById('typed-text');
+    const phrases = ["Build.", "Deploy.", "Connect."];
+    let phraseIndex = 0, charIndex = 0, isDeleting = false, typeSpeed = 150;
+
+    function type() {
+        const currentPhrase = phrases[phraseIndex];
+        textElement.textContent = currentPhrase.substring(0, isDeleting ? charIndex - 1 : charIndex + 1);
+        charIndex += isDeleting ? -1 : 1;
+        
+        typeSpeed = isDeleting ? 50 : 150;
+        if (!isDeleting && charIndex === currentPhrase.length) { isDeleting = true; typeSpeed = 2000; }
+        else if (isDeleting && charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500; }
+        setTimeout(type, typeSpeed);
+    }
+    document.addEventListener('DOMContentLoaded', type);
+
+    // 4. LOG UPDATER (New Alive Feature - Fixed infinite scroll)
+    setInterval(() => {
+        const lb = document.getElementById('logBox');
+        const lines = lb.value.split('\n');
+        if (lines.length > 8) lines.splice(4, 1); // Keep initial logs, rotate new pings
+        lines.push(`> Ping update: ${Math.floor(Math.random()*15)+5}ms`);
+        lb.value = lines.join('\n');
+        lb.scrollTop = lb.scrollHeight;
+    }, 3000);
+
+    // 5. GRAPH INITIALIZATION (Sharp Lines + Fade Logic)
+    const canvas = document.getElementById('glowingChart');
+    const ctx = canvas.getContext('2d');
+
+    const getVerticalGradient = (ctx, chartArea, color) => {
+        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+        gradient.addColorStop(0, color); 
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        return gradient;
+    };
+
+    const shadowPlugin = {
+        id: 'shadowPlugin',
+        afterDraw: (chart) => {
+            const { ctx, width, height } = chart;
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-in';
+            const edgeFade = ctx.createLinearGradient(0, 0, width, 0);
+            edgeFade.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            edgeFade.addColorStop(0.15, 'rgba(0, 0, 0, 1)'); // FADE IN
+            edgeFade.addColorStop(0.85, 'rgba(0, 0, 0, 1)'); // FADE OUT
+            edgeFade.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = edgeFade;
+            ctx.fillRect(0, 0, width, height);
+            ctx.restore();
+        }
+    };
+
+    new Chart(ctx, {
+        type: 'line',
+        plugins: [shadowPlugin],
+        data: {
+            labels: ['12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm'],
+            datasets: [
+                {
+                    label: 'Requests',
+                    data: [66, 86, 79, 95, 72, 78, 79],
+                    borderColor: '#a855f7',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    fill: true,
+                    tension: 0, // SHARP DIGITAL LINES
+                    backgroundColor: (context) => {
+                        const {ctx, chartArea} = context.chart;
+                        return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(168, 85, 247, 0.25)') : null;
+                    }
+                },
+                {
+                    label: 'Server',
+                    data: [38, 48, 36, 33, 52, 45, 54],
+                    borderColor: '#ec4899',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    fill: true,
+                    tension: 0, // SHARP DIGITAL LINES
+                    backgroundColor: (context) => {
+                        const {ctx, chartArea} = context.chart;
+                        return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(236, 72, 153, 0.25)') : null;
+                    }
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 2000 },
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.03)' }, ticks: { display: false } },
+                x: { grid: { display: false }, ticks: { color: '#555', font: { size: 10 } } }
+            }
+        }
+    });
 </script>
 
 </body>
