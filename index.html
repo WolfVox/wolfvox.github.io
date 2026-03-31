@@ -16,7 +16,8 @@
             --topheader : rgb(0, 0, 0) ;
             --header: #000000;
             --card-bg: #000000;
-            --border: #2d2d30;
+            --border: #222222;
+            --border-box: #222222;
             --accent: #acacac;
             --text-main: #eeeeee;
             --text-dim: #a1a1aa;
@@ -24,6 +25,7 @@
             /* Graph specific colors */
             --purple-glow: #a855f7;
             --pink-glow: #ec4899;
+            --cur-col:rgb(0, 255, 208);
         }
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -37,10 +39,10 @@
 
         /* NAVBARS */
         nav { display: flex; align-items: center; padding: 12px 30px; background: var(--topheader); border-bottom: 1px solid var(--border); justify-content: space-between; position: relative; z-index: 1000; }
-        .sub-nav { display: flex; gap: 15px; padding: 10px 30px; background: var(--header); border-bottom: 1px solid var(--border); }
-        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; transition: 0.3s; }
-        .sub-btn.active { color: var(--text-main); border-bottom: 2px solid var(--accent); }
-        .sub-btn:hover { color: white; }
+        .sub-nav { display: flex; gap: 15px; padding: 10px 30px; padding-bottom: 0px; background: var(--header); border-bottom: 1px solid var(--border); }
+        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; padding-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; transition: 0.3s; }
+        .sub-btn.active { color: var(--text-main); border-bottom: 2px solid rgb(255, 110, 70); }
+        .sub-btn:hover { color: rgb(255, 255, 255);}
 
         /* HERO SECTION */
 .hero { 
@@ -50,28 +52,53 @@
     z-index: 10;
     
     /* Layered gradients: Top-Left, Top-Right, Bottom-Left, Bottom-Right, and Center */
+
+
+        /* Your original colors + the new grid layer */
     background-image: 
-        radial-gradient(circle at 0% 0%, #1b1b3f 0%, transparent 40%),
-        radial-gradient(circle at 100% 50%, #1a1a40 0%, transparent 40%);
+        /* 1. The Grid Layer (New) */
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        
+        /* 2. Your Original Gradients */
+        radial-gradient(circle at -10% -10%, #291556 0%, transparent 40%),
+        linear-gradient(to top , rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0) 50%),
+        radial-gradient(circle at 105% 100%, #005656 0%, transparent 40%);
+    ;
+    /* Control the size of the squares here */
+    background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%, 100% 100%;
+    
+    /* Ensure the background color is dark enough to see the effect */
+    background-color: #000000; 
+    width: 100wv;
+    max-width: 100%;
+    height: 100vh;
 
 }
+
+
         .hero h1 { font-size: clamp(40px, 8vw, 72px); margin: 0; letter-spacing: -3px; font-weight: 800; min-height: 1.2em; }
         .hero p { color: var(--text-dim); font-size: 18px; margin: 24px auto 48px; max-width: 600px; line-height: 1.6; }
+        
 
-        /* BUTTONS (Original White-Slide Animation) */
         .render-btn {
             position: relative; padding: 16px 42px; font-size: 14px; font-weight: 700; color: var(--accent);
             background: transparent; border: 1px solid var(--accent); cursor: pointer; overflow: hidden;
             transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px; text-decoration: none;
             display: inline-block; z-index: 1;
-            border-radius: 25px;
+            border-radius: 2000px;
+
         }
+
         .render-btn::before {
-            content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: #ffffff; z-index: -1; transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            content:""; position:absolute; inset:0; background:#ffffff;  transform:scaleX(0);
+            transform-origin:right; transition:transform .35s cubic-bezier(.65,0,.35,1); z-index:-1;
         }
-        .render-btn:hover { color: #000; border-color: #fff; }
-        .render-btn:hover::before { transform: translateX(100%); }
+        .render-btn:hover::before { transform-origin:left; transform:scaleX(1); }
+        .render-btn:hover { color:#000000; border-color:#ffffff; }
+        /* ------------------------------------- */
+
+
 
         /* USER PROFILE STYLING (Restored) */
         .user-pill {
@@ -84,11 +111,60 @@
 
         /* BOX GRID */
         .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: -40px auto 40px; padding: 0 20px; position: relative; z-index: 20; }
-        .info-box { background: var(--card-bg); border: 1px solid var(--border); padding: 40px; border-radius: 12px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .info-box:hover { border-color: var(--purple-glow); transform: translateY(-10px); background: #0a0a0c; }
-        .info-box i { font-size: 28px; color: var(--purple-glow); margin-bottom: 20px; }
-        .info-box h3 { margin: 0 0 12px; font-size: 20px; }
-        .info-box p { color: var(--text-dim); font-size: 15px; line-height: 1.6; margin: 0; }
+.info-box { 
+    background: var(--card-bg); 
+    border: 1px solid var(--border); 
+    padding: 40px; 
+    border-radius: 0px; 
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; 
+    overflow: hidden;
+}
+ 
+.info-box:hover { 
+    border-color: var(--purple-glow); 
+    transform: translateY(-10px); 
+    background: #0a0a0c;
+}
+
+.info-box i { 
+    font-size: 28px; 
+    color: var(--purple-glow); 
+    margin-bottom: 20px; 
+}
+
+.info-box h3 { 
+    margin: 0 0 12px; 
+    font-size: 20px; 
+}
+
+.info-box p { 
+    color: var(--text-dim); 
+    font-size: 15px; 
+    line-height: 1.6; 
+    margin: 0; 
+}
+
+/* THE FADE EFFECT */
+.info-box::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* This controls how far up the fade goes */
+    height: 100%; 
+    /* Gradient from solid black at the bottom to transparent */
+    background-image: linear-gradient(to top, #000000 5%, transparent 100%);
+    
+    /* This ensures it sits ON TOP of the text */
+    z-index: 99; 
+    pointer-events: none; 
+}
+.info-box:hover::after {
+    transition: all;
+    opacity: 0;
+}
 
         /* ANALYTICS SECTION (Alive & Floating) */
         .analytics-section {
@@ -98,14 +174,17 @@
         @keyframes float { 0%, 100% { transform: translateY(0) rotateX(0); } 50% { transform: translateY(-12px) rotateX(1deg); } }
 
         .graph-box {
-            flex: 2; background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 30px; height: 400px; position: relative;
+            flex: 2; background: #000;  border-radius: 12px; padding: 30px; height: 400px; position: relative;
             background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 30px 30px; box-shadow: 0 0 30px rgba(168, 85, 247, 0.05);
+            background-size: 30px 30px; box-shadow: 0 0 30px rgba(168, 85, 247, 0.05); overflow: hidden;
+
+
+            
         }
         .scan-line { width: 100%; height: 1px; background: rgba(168, 85, 247, 0.2); position: absolute; top: 0; left: 0; animation: scan 5s linear infinite; pointer-events: none; }
         @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
 
-        .graph-textbox { flex: 1; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; }
+        .graph-textbox { flex: 1; background: var(--card-bg);  border-radius: 12px; padding: 20px; display: flex; flex-direction: column; }
         .graph-textbox textarea {
             flex-grow: 1; background: rgba(0,0,0,0.7); border: 1px solid var(--border); color: var(--purple-glow);
             padding: 15px; font-family: 'Courier New', monospace; resize: none; outline: none; border-radius: 8px; margin-top: 15px;
@@ -116,6 +195,15 @@
         .sitemap-container {
             max-width: 100%; margin-top: 20px auto; background: var(--bg); border-top: rgba(255, 255, 255, 0.1) solid 1px;
             padding: 60px 40px; display: flex; justify-content: space-evenly; align-items: center;
+            
+    background-image: 
+        
+        /* 2. Your Original Gradients */
+        radial-gradient(circle at -10% -10%, #291556 0%, transparent 25%),
+        radial-gradient(circle at 50% -10%, #291556 0%, transparent 50%),
+        radial-gradient(circle at 105% 110%, #005656 0%, transparent 25%);
+    ;
+
         }
         .sitemap-col h4 { margin-top: 0; color: #fff; }
         .sitemap-col a { display: block; color: var(--accent); text-decoration: none; margin-bottom: 8px; font-size: 14px; }
@@ -123,35 +211,135 @@
         footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; background-color: #000 ; border-top: 1px solid var(--border); }
 
         /* Typing Cursor */
-        .cursor { color: var(--purple-glow); font-weight: 200; animation: blink 1s infinite; margin-left: 5px; }
+        .cursor { color: var(--cur-col); font-weight: 200; animation: blink 1s infinite; margin-left: 5px; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         @media (max-width: 850px) { .analytics-section { flex-direction: column; } }
+        .span-text {
+
+            background: linear-gradient(to right, #4e2fff 1%, #7bfed4 74%);
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+            font-weight: bold;
+            font-size: 2rem;
+}
+
+/* The 3-Line Button */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 25px ;
+    z-index: 1100;
+}
+
+.menu-toggle span {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text-main);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+/* The Menu Div */
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Hidden by default */
+    width: 280px;
+    height: 100vh;
+    background: #050505;
+    border-left: 1px solid var(--border);
+    padding: 80px 40px;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.side-menu.active {
+    right: 0; /* Slide in */
+}
+
+.side-menu a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.side-menu a:hover {
+    color: var(--purple-glow);
+}
     </style>
 </head>
 <body>
 
 <nav>
-    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+
+    <button class="menu-toggle" onclick="toggleMenu()">
+    <span style="background-color: rgb(255, 255, 255);"></span>
+    <span style="background-color: rgba(255, 255, 255, 0.671);"></span>
+    <span style="background-color: rgba(255, 255, 255, 0.427);"></span>
+</button>
+
+<div id="mobileMenu" class="side-menu">
+    <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+    <a href="/" class="sub-btn active"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="/Forms" class="sub-btn"><i class="fa-solid fa-code"></i> Forms</a>
+    <a href="/CloudHosting" class="sub-btn"><i class="fa-solid fa-tower-broadcast"></i> Hosting</a>
+    <a href="/signin" class="sub-btn"><i class="fa-solid fa-right-to-bracket"></i> Accounts</a>
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+    <p style="font-size: 12px; color: var(--text-dim);">support : wolfvoxco@gmail.com</p>
+</div>
+
+    
         <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+        
     </div>
     <div id="navAuthArea" style="display: flex; gap: 20px; align-items: center;">
-        <a href="/CloudHosting" class="render-btn" style="padding: 10px 25px; font-size: 11px;">New : <i class="fa-solid fa-tower-broadcast"></i> Host website on wolfcloud</a>
-        <a href="/signin" class="render-btn" style="padding: 10px 25px; font-size: 11px;"> <i class="fa-solid fa-right-to-bracket"></i> Sign In</a>
+<div style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); padding: 5px 12px; border-radius: 2000px; background: rgba(255,255,255,0.02);">
+        <h5 style="margin: 0;">[ <i class="span-text" style="font-size: 12px; font-style: normal;">support : wolfvoxco@gmail.com</i> ]</h5>
+        <button onclick="navigator.clipboard.writeText('wolfvoxco@gmail.com'); this.innerHTML='<i class=\'fa-solid fa-check\'></i>'; setTimeout(() => { this.innerHTML='<i class=\'fa-regular fa-copy\'></i>' }, 2000);" 
+                style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 12px; padding: 0; transition: 0.3s;" 
+                title="Copy Email">
+            <i class="fa-regular fa-copy"></i>
+        </button>
+    </div>
+        <a href="/signin" class="render-btn" style="     background-image: 
+        /* 1. The Grid Layer (New) */
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        
+        /* 2. Your Original Gradients */
+        radial-gradient(circle at -10% -10%, #291556 0%, transparent 40%),
+        linear-gradient(to top , rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0) 50%),
+        radial-gradient(circle at 105% 100%, #005656 0%, transparent 40%);
+    ;padding: 10px 25px; font-size: 11px;"> <i class="fa-solid fa-right-to-bracket"></i> Sign In</a>
     </div>
 </nav>
 
 <div class="sub-nav">
     <a href="/" class="sub-btn active"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="https://hub-wolfvox.github.io" class="sub-btn"><i class="fa-solid fa-network-wired"></i> Hub</a>
     <a href="/Forms" class="sub-btn"><i class="fa-solid fa-code"></i> Forms</a>
     <a href="/CloudHosting" class="sub-btn"><i class="fa-solid fa-tower-broadcast"></i> Hosting</a>
-    <a href="/signin" class="sub-btn"><i class="fa-solid fa-right-to-bracket"></i> Log in</a>
+    <a href="/signin" class="sub-btn"><i class="fa-solid fa-right-to-bracket"></i> Accounts</a>
 </div>
 
 <section class="hero">
-    <h1><span id="typed-text"></span><span class="cursor">|</span></h1>
-    <p>Deploy your individual site. Publish forms. <br> We can handle up to 25,000 sites and forms</p>
+    <h1><span id="typed-text"></span><span class="cursor" style="background: linear-gradient(to bottom, #4e2fff 1%, #7bfed4 74%);-webkit-background-clip: text;background-clip: text;color: transparent;font-weight: bold;">|</span></h1>
+    <p>Deploy your individual site. Publish forms. <br> We can handle up to <b class="span-text">5,000</b> sites and forms.</p>
     <a href="/Forms" class="render-btn"> Get Started</a>
 </section>
 
@@ -173,30 +361,40 @@
     </div>
 </div>
 
-<div class="analytics-section" >
-    <div class="graph-box" >
+<div class="analytics-section">
+    <div class="graph-box">
         <div class="scan-line"></div>
-        <h3 style="margin: 0 0 20px 0; font-size: 11px; text-transform: uppercase; color: var(--purple-glow); letter-spacing: 2px;"> > Real-Time Performance...</h3>
-        <canvas id="glowingChart"></canvas>
+        <h3 style="margin: 0 0 20px 0; font-size: 11px; text-transform: uppercase; color: var(--purple-glow); letter-spacing: 2px;"> 
+            > Real-Time Performance...
+        </h3>
+        <div style="height: 300px; width: 100%; position: relative;">
+            <canvas id="glowingChart"></canvas>
+        </div>
     </div>
     <div class="graph-textbox">
         <h3 style="margin:0; font-size: 14px; color: var(--accent);">DEPLOYMENT LOGS</h3>
-        <textarea readonly id="logBox">> Initializing Analytics...
-> Connection Secure.
-> Watching Node: wolfvox-main
-> Latency: 14ms</textarea>
+        <textarea readonly id="logBox">> Initializing Analytics...</textarea>
     </div>
 </div>
 
 <div class="sitemap-container">
     <div class="SiteMapImage"><img src="https://github.com/WolfVox/wolfvox.github.io/blob/main/WolfVoxLogo.png?raw=true" alt="?" height="125px" width="125px"></div>
-    <div class="sitemap-col"><h4>Product</h4><a href="#">Forms</a><a href="#">Analytics</a></div>
-    <div class="sitemap-col"><h4>Resources</h4><a href="#">Docs</a><a href="#">Hub</a></div>
-    <div class="sitemap-col"><h4>Community</h4><a href="#">Discord</a><a href="#">Twitter</a></div>
-    <div class="sitemap-col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a></div>
+    <div class="sitemap-col"><h4>Product</h4><a href="/Forms">Forms</a><a href="/CloudHosting">Hosting</a></div>
+    <div class="sitemap-col"><h4>Forms</h4><a href="/Forms/Docs">Docs</a><a href="/Form/Market">Marketplace</a></div>
+    <div class="sitemap-col"><h4>WolfCloud</h4><a href="/CloudHosting/Docs">Docs</a><a href="/CloudHosting/Docs#routing">Routung</a></div>
+    <div class="sitemap-col"><h4>Legal</h4><a href="/Forms/Docs#terms">Privacy</a><a href="/Forms/Docs#rules">Terms & Rules</a></div>
 </div>
-
-<footer>&copy; 2026 WolfVoxCo.</footer>
+<div class="info-box" style="display: flex; justify-content: space-evenly; align-items: center; flex-direction: row; padding-left:2.5%;">
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+</div>
+<footer>&copy; 2026 WolfVoxCo. </footer> 
 
 <script>
     // 1. AUTH & NAVBAR LOGIC (Restored Original)
@@ -205,6 +403,7 @@
         const authArea = document.getElementById('navAuthArea');
         if (user) {
             authArea.innerHTML = `
+                <h5 >[ <i class="span-text" style="font-size: 12px;"">support : wolfvoxco@gmail.com</i> ]</h5>
                 <div class="user-pill">
                     <img src="${user.img}" alt="User">
                     <span style="font-size: 12px; font-weight: 600;">${user.name.split(' ')[0]}</span>
@@ -286,27 +485,27 @@
                 {
                     label: 'Requests',
                     data: [66, 86, 79, 95, 72, 78, 79],
-                    borderColor: '#a855f7',
+                    borderColor: '#8003fc',
                     borderWidth: 1.5,
                     pointRadius: 0,
                     fill: true,
                     tension: 0, // SHARP DIGITAL LINES
                     backgroundColor: (context) => {
                         const {ctx, chartArea} = context.chart;
-                        return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(168, 85, 247, 0.25)') : null;
+                        return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(128, 3, 252, 0.25)') : null;
                     }
                 },
                 {
                     label: 'Server',
                     data: [38, 48, 36, 33, 52, 45, 54],
-                    borderColor: '#ec4899',
+                    borderColor: '#03fc7f',
                     borderWidth: 1.5,
                     pointRadius: 0,
                     fill: true,
                     tension: 0, // SHARP DIGITAL LINES
                     backgroundColor: (context) => {
                         const {ctx, chartArea} = context.chart;
-                        return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(236, 72, 153, 0.25)') : null;
+                        return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(3, 252, 127, 0.25)') : null;
                     }
                 }
             ]
@@ -322,6 +521,24 @@
             }
         }
     });
+
+    function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('active');
+    
+    // Optional: Animate the 3 lines into an 'X'
+    const spans = document.querySelectorAll('.menu-toggle span');
+    spans.forEach((span, index) => {
+        if (menu.classList.contains('active')) {
+            if(index === 0) span.style.transform = "rotate(45deg) translate(5px, 5px)";
+            if(index === 1) span.style.opacity = "0";
+            if(index === 2) span.style.transform = "rotate(-45deg) translate(7px, -8px)";
+        } else {
+            span.style.transform = "none";
+            span.style.opacity = "1";
+        }
+    });
+}
 </script>
 
 </body>
