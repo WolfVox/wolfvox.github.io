@@ -397,20 +397,40 @@
 <footer>&copy; 2026 WolfVoxCo. </footer> 
 
 <script>
-    // 1. AUTH & NAVBAR LOGIC (Restored Original)
+    // HELPER: Function to get a specific cookie by name
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
+        return null;
+    }
+
+    // 1. AUTH & NAVBAR LOGIC (Updated for Cookies)
     function updateNavbar() {
-        const user = JSON.parse(localStorage.getItem('wv_user'));
+        // Retrieve the 'wv_user' cookie
+        const cookieData = getCookie('wv_user');
+        let user = null;
+
+        try {
+            if (cookieData) {
+                user = JSON.parse(cookieData);
+            }
+        } catch (e) {
+            console.error("Error parsing user cookie", e);
+        }
+
         const authArea = document.getElementById('navAuthArea');
-        if (user) {
+        
+        if (user && authArea) {
             authArea.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); padding: 5px 12px; border-radius: 2000px; background: rgba(255,255,255,0.02);">
-        <h5 style="margin: 0;">[ <i class="span-text" style="font-size: 12px; font-style: normal;">support : wolfvoxco@gmail.com</i> ]</h5>
-        <button onclick="navigator.clipboard.writeText('wolfvoxco@gmail.com'); this.innerHTML='<i class=\'fa-solid fa-check\'></i>'; setTimeout(() => { this.innerHTML='<i class=\'fa-regular fa-copy\'></i>' }, 2000);" 
-                style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 12px; padding: 0; transition: 0.3s;" 
-                title="Copy Email">
-            <i class="fa-regular fa-copy"></i>
-        </button>
-    </div>
+                    <h5 style="margin: 0;">[ <i class="span-text" style="font-size: 12px; font-style: normal;">support : wolfvoxco@gmail.com</i> ]</h5>
+                    <button onclick="navigator.clipboard.writeText('wolfvoxco@gmail.com'); this.innerHTML='<i class=\'fa-solid fa-check\'></i>'; setTimeout(() => { this.innerHTML='<i class=\'fa-regular fa-copy\'></i>' }, 2000);" 
+                            style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 12px; padding: 0; transition: 0.3s;" 
+                            title="Copy Email">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
                 <div class="user-pill">
                     <img src="${user.img}" alt="User">
                     <span style="font-size: 12px; font-weight: 600;">${user.name.split(' ')[0]}</span>
@@ -419,16 +439,18 @@
             `;
         }
     }
+
+    // Updated Logout for Cookies
     function logout() {
-        localStorage.removeItem('wv_user');
+        // To delete a cookie, we set its expiration date to the past
+        document.cookie = "wv_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         location.reload();
     }
+
+    // Run on load
     updateNavbar();
 
-    // 2. MOUSE GLOW (New Interaction)
-
-
-    // 3. TYPING ANIMATION (Original Phrases)
+    // 2. TYPING ANIMATION
     const textElement = document.getElementById('typed-text');
     const phrases = ["Build.", "Deploy.", "Connect."];
     let phraseIndex = 0, charIndex = 0, isDeleting = false, typeSpeed = 150;
@@ -445,107 +467,108 @@
     }
     document.addEventListener('DOMContentLoaded', type);
 
-    // 4. LOG UPDATER (New Alive Feature - Fixed infinite scroll)
+    // 3. LOG UPDATER
     setInterval(() => {
         const lb = document.getElementById('logBox');
+        if(!lb) return;
         const lines = lb.value.split('\n');
-        if (lines.length > 8) lines.splice(4, 1); // Keep initial logs, rotate new pings
+        if (lines.length > 8) lines.splice(4, 1); 
         lines.push(`> Ping update: ${Math.floor(Math.random()*15)+5}ms`);
         lb.value = lines.join('\n');
         lb.scrollTop = lb.scrollHeight;
     }, 3000);
 
-    // 5. GRAPH INITIALIZATION (Sharp Lines + Fade Logic)
+    // 4. GRAPH INITIALIZATION (Keeping your original Chart.js logic)
     const canvas = document.getElementById('glowingChart');
-    const ctx = canvas.getContext('2d');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const getVerticalGradient = (ctx, chartArea, color) => {
+            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            gradient.addColorStop(0, color); 
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            return gradient;
+        };
 
-    const getVerticalGradient = (ctx, chartArea, color) => {
-        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-        gradient.addColorStop(0, color); 
-        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        return gradient;
-    };
-
-    const shadowPlugin = {
-        id: 'shadowPlugin',
-        afterDraw: (chart) => {
-            const { ctx, width, height } = chart;
-            ctx.save();
-            ctx.globalCompositeOperation = 'destination-in';
-            const edgeFade = ctx.createLinearGradient(0, 0, width, 0);
-            edgeFade.addColorStop(0, 'rgba(0, 0, 0, 0)');
-            edgeFade.addColorStop(0.15, 'rgba(0, 0, 0, 1)'); // FADE IN
-            edgeFade.addColorStop(0.85, 'rgba(0, 0, 0, 1)'); // FADE OUT
-            edgeFade.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            ctx.fillStyle = edgeFade;
-            ctx.fillRect(0, 0, width, height);
-            ctx.restore();
-        }
-    };
-
-    new Chart(ctx, {
-        type: 'line',
-        plugins: [shadowPlugin],
-        data: {
-            labels: ['12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm'],
-            datasets: [
-                {
-                    label: 'Requests',
-                    data: [66, 86, 79, 95, 72, 78, 79],
-                    borderColor: '#8003fc',
-                    borderWidth: 1.5,
-                    pointRadius: 0,
-                    fill: true,
-                    tension: 0, // SHARP DIGITAL LINES
-                    backgroundColor: (context) => {
-                        const {ctx, chartArea} = context.chart;
-                        return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(128, 3, 252, 0.25)') : null;
-                    }
-                },
-                {
-                    label: 'Server',
-                    data: [38, 48, 36, 33, 52, 45, 54],
-                    borderColor: '#03fc7f',
-                    borderWidth: 1.5,
-                    pointRadius: 0,
-                    fill: true,
-                    tension: 0, // SHARP DIGITAL LINES
-                    backgroundColor: (context) => {
-                        const {ctx, chartArea} = context.chart;
-                        return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(3, 252, 127, 0.25)') : null;
-                    }
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 2000 },
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.03)' }, ticks: { display: false } },
-                x: { grid: { display: false }, ticks: { color: '#555', font: { size: 10 } } }
+        const shadowPlugin = {
+            id: 'shadowPlugin',
+            afterDraw: (chart) => {
+                const { ctx, width, height } = chart;
+                ctx.save();
+                ctx.globalCompositeOperation = 'destination-in';
+                const edgeFade = ctx.createLinearGradient(0, 0, width, 0);
+                edgeFade.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                edgeFade.addColorStop(0.15, 'rgba(0, 0, 0, 1)');
+                edgeFade.addColorStop(0.85, 'rgba(0, 0, 0, 1)');
+                edgeFade.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = edgeFade;
+                ctx.fillRect(0, 0, width, height);
+                ctx.restore();
             }
-        }
-    });
+        };
 
+        new Chart(ctx, {
+            type: 'line',
+            plugins: [shadowPlugin],
+            data: {
+                labels: ['12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm'],
+                datasets: [
+                    {
+                        label: 'Requests',
+                        data: [66, 86, 79, 95, 72, 78, 79],
+                        borderColor: '#8003fc',
+                        borderWidth: 1.5,
+                        pointRadius: 0,
+                        fill: true,
+                        tension: 0,
+                        backgroundColor: (context) => {
+                            const {ctx, chartArea} = context.chart;
+                            return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(128, 3, 252, 0.25)') : null;
+                        }
+                    },
+                    {
+                        label: 'Server',
+                        data: [38, 48, 36, 33, 52, 45, 54],
+                        borderColor: '#03fc7f',
+                        borderWidth: 1.5,
+                        pointRadius: 0,
+                        fill: true,
+                        tension: 0,
+                        backgroundColor: (context) => {
+                            const {ctx, chartArea} = context.chart;
+                            return chartArea ? getVerticalGradient(ctx, chartArea, 'rgba(3, 252, 127, 0.25)') : null;
+                        }
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 2000 },
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.03)' }, ticks: { display: false } },
+                    x: { grid: { display: false }, ticks: { color: '#555', font: { size: 10 } } }
+                }
+            }
+        });
+    }
+
+    // 5. MOBILE MENU
     function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    menu.classList.toggle('active');
-    
-    // Optional: Animate the 3 lines into an 'X'
-    const spans = document.querySelectorAll('.menu-toggle span');
-    spans.forEach((span, index) => {
-        if (menu.classList.contains('active')) {
-            if(index === 0) span.style.transform = "rotate(45deg) translate(5px, 5px)";
-            if(index === 1) span.style.opacity = "0";
-            if(index === 2) span.style.transform = "rotate(-45deg) translate(7px, -8px)";
-        } else {
-            span.style.transform = "none";
-            span.style.opacity = "1";
-        }
-    });
-}
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('active');
+        const spans = document.querySelectorAll('.menu-toggle span');
+        spans.forEach((span, index) => {
+            if (menu.classList.contains('active')) {
+                if(index === 0) span.style.transform = "rotate(45deg) translate(5px, 5px)";
+                if(index === 1) span.style.opacity = "0";
+                if(index === 2) span.style.transform = "rotate(-45deg) translate(7px, -8px)";
+            } else {
+                span.style.transform = "none";
+                span.style.opacity = "1";
+            }
+        });
+    }
 </script>
 
 </body>
