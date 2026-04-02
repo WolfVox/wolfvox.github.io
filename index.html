@@ -39,8 +39,48 @@
 
         /* NAVBARS */
         nav { display: flex; align-items: center; padding: 12px 30px; background: var(--topheader); border-bottom: 1px solid var(--border); justify-content: space-between; position: relative; z-index: 1000; }
-        .sub-nav { display: flex; gap: 15px; padding: 10px 30px; padding-bottom: 0px; background: var(--header); border-bottom: 1px solid var(--border); }
-        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; padding-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; transition: 0.3s; }
+.sub-nav { 
+  display: flex; 
+  gap: 15px; 
+  padding: 10px 30px; 
+  padding-bottom: 0px; 
+  background: var(--header); 
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 1;
+  
+  /* Enables horizontal scrolling */
+  overflow-x: auto;
+  white-space: nowrap;
+  
+  /* Optional: Hides the scrollbar for a cleaner look on some browsers */
+  -webkit-overflow-scrolling: touch; 
+}
+
+.sub-nav {
+  /* For Firefox: scrollbar-color: [thumb-color] [track-color] */
+  scrollbar-color: rgba(255, 255, 255, 0.377) transparent;
+  scrollbar-width: thin ; /* Optional: makes it less bulky */
+}
+
+/* For Chrome, Edge, and Safari */
+.sub-nav::-webkit-scrollbar {
+  height: 1px; /* Height for horizontal scrollbars */
+}
+
+.sub-nav::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.sub-nav::-webkit-scrollbar-thumb {
+  background-color: rgb(55, 55, 55);
+  border-radius: 0; /* Makes the scrollbar edges rounded */
+}
+
+
+/* Ensure the items inside don't shrink to fit the screen */
+.sub-nav > * {
+  flex: 0 0 1;
+}        .sub-btn { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; padding: 8px 12px; padding-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; text-decoration: none; transition: 0.3s; }
         .sub-btn.active { color: var(--text-main); border-bottom: 2px solid rgb(255, 110, 70); }
         .sub-btn:hover { color: rgb(255, 255, 255);}
 
@@ -164,6 +204,55 @@
 .info-box:hover::after {
     transition: all;
     opacity: 0;
+}
+
+/* The Container (The Window) */
+.tm-box { 
+    background-color: black;
+    border: 1px solid var(--border); 
+    padding: 40px; 
+    border-radius: 0px; 
+    position: relative; 
+    overflow: hidden; /* Important: Hides the overflowing text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    /* Set a specific height for the scroll area */
+    height: 125px; 
+}
+
+/* The Scrolling Content Wrapper */
+.tm-scroll-content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    /* Animation: name | duration | timing | iteration */
+    animation: scroll-up 25s linear infinite;
+    
+}
+
+/* Pause on hover for readability */
+
+
+/* The Gradient Overlay (Your existing code) */
+.tm-box::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 40%; /* Adjusted to let more text be visible at once */
+    background-image: linear-gradient(to top, #000000 5%, transparent 100%);
+    z-index: 99; 
+    pointer-events: none; 
+}
+
+/* The Infinite Loop Logic */
+@keyframes scroll-up {
+    0% { transform: translateX(7%); }
+    50% { transform: translateX(-7%); }
 }
 
         /* ANALYTICS SECTION (Alive & Floating) */
@@ -290,8 +379,8 @@
 
     <button class="menu-toggle" onclick="toggleMenu()">
     <span style="background-color: rgb(255, 255, 255);"></span>
-    <span style="background-color: rgba(255, 255, 255, 0.671);"></span>
-    <span style="background-color: rgba(255, 255, 255, 0.427);"></span>
+    <span style="background-color: rgb(255, 255, 255);"></span>
+    <span style="background-color: rgb(255, 255, 255);"></span>
 </button>
 
 <div id="mobileMenu" class="side-menu">
@@ -335,6 +424,9 @@
     <a href="/Forms" class="sub-btn"><i class="fa-solid fa-code"></i> Forms</a>
     <a href="/CloudHosting" class="sub-btn"><i class="fa-solid fa-tower-broadcast"></i> Hosting</a>
     <a href="/signin" class="sub-btn"><i class="fa-solid fa-right-to-bracket"></i> Accounts</a>
+    <div style="display:flex; justify-content: right; width: 100%;">
+        <a href="#apps-g" class="sub-btn"><i class="fa-solid fa-grip"></i> Apps</a>
+    </div>
 </div>
 
 <section class="hero">
@@ -384,17 +476,37 @@
     <div class="sitemap-col"><h4>WolfCloud</h4><a href="/CloudHosting/Docs">Docs</a><a href="/CloudHosting/Docs#routing">Routung</a></div>
     <div class="sitemap-col"><h4>Legal</h4><a href="/Forms/Docs#terms">Privacy</a><a href="/Forms/Docs#rules">Terms & Rules</a></div>
 </div>
-<div class="info-box" style="display: flex; justify-content: space-evenly; align-items: center; flex-direction: row; padding-left:2.5%;">
+<div style="
+
+            margin: 0px auto; padding: 5px; display: flex; justify-content: center; align-items: center; flex-direction: row;
+            ">
+    <h1 style="font-family: 'Courier New', Courier, monospace; color: #00ffff;">Our Apps</h1>
+
+    <div class="tm-box" id="apps-g" >
+<div class="tm-scroll-content" style="display: flex; justify-content: center; align-items: center;">
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" alt="?" height="75px" width="75px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/DevForms.png?raw=true" alt="?" height="75px" width="75px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/MasVoxtmhalf.png?raw=true" alt="?" height="50px" width="125px" >
+
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
+
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" alt="?" height="75px" width="75px" >
+
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/DevForms.png?raw=true" alt="?" height="75px" width="75px" >
+
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/MasVoxtmhalf.png?raw=true" alt="?" height="50px" width="125px" >
+
+
+
+
+</div></div>
 </div>
-<footer>&copy; 2026 WolfVoxCo. </footer> 
+
+<footer style="display: flex; justify-content: center; align-items: center; flex-direction: row; gap: 5px;"> <img src="https://github.com/WolfVox/Logos/blob/main/W.png?raw=true" alt="" width="30px" height="30px"> &copy; 2026 WolfVox , Co. </footer> 
 
 <script>
     // HELPER: Function to get a specific cookie by name
