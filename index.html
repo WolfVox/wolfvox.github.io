@@ -441,11 +441,22 @@
     }
 
     // Updated Logout for Cookies
-    function logout() {
-        // To delete a cookie, we set its expiration date to the past
-        document.cookie = "wv_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        location.reload();
-    }
+function logout() {
+    // 1. Define the cookie name
+    const name = 'wv_user';
+    
+    // 2. Clear for the root domain (covers all subdomains)
+    document.cookie = name + '=; Max-Age=-99999999; path=/; domain=.wolfvox.me; SameSite=Lax';
+    
+    // 3. Clear for the current specific subdomain (just in case)
+    document.cookie = name + '=; Max-Age=-99999999; path=/;';
+    
+    // 4. Clear localStorage as a fallback
+    localStorage.removeItem(name);
+    
+    // 5. Redirect to login
+    window.location.href = 'https://login.wolfvox.me';
+}
 
     // Run on load
     updateNavbar();
