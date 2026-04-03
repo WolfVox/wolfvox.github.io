@@ -209,7 +209,6 @@
 /* The Container (The Window) */
 .tm-box { 
     background-color: black;
-    border: 1px solid var(--border); 
     padding: 40px; 
     border-radius: 0px; 
     position: relative; 
@@ -243,16 +242,20 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 40%; /* Adjusted to let more text be visible at once */
-    background-image: linear-gradient(to top, #000000 5%, transparent 100%);
+    /* This controls how far up the fade goes */
+    height: 100%; 
+    /* Gradient from solid black at the bottom to transparent */
+    background-image: linear-gradient(to right, #000000 5%, transparent 25%,#000000 65%);
+    
+    /* This ensures it sits ON TOP of the text */
     z-index: 99; 
     pointer-events: none; 
 }
 
 /* The Infinite Loop Logic */
 @keyframes scroll-up {
-    0% { transform: translateX(7%); }
-    50% { transform: translateX(-7%); }
+    0% { transform: translateX(-0%); }
+    100% { transform: translateX(-50%); }
 }
 
         /* ANALYTICS SECTION (Alive & Floating) */
@@ -476,14 +479,12 @@
     <div class="sitemap-col"><h4>WolfCloud</h4><a href="/CloudHosting/Docs">Docs</a><a href="/CloudHosting/Docs#routing">Routung</a></div>
     <div class="sitemap-col"><h4>Legal</h4><a href="/Forms/Docs#terms">Privacy</a><a href="/Forms/Docs#rules">Terms & Rules</a></div>
 </div>
-<div style="
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: row; flex-grow: 1;">
+        <h1 id="apps-g" class="sitemap-container" style="padding: 63px; margin: 0; height: 5vw; width: 25%; display: flex; justify-content: center; align-items: center;">Our Apps</h1>
 
-            margin: 0px auto; padding: 5px; display: flex; justify-content: center; align-items: center; flex-direction: row;
-            ">
-    <h1 style="font-family: 'Courier New', Courier, monospace; color: #00ffff;">Our Apps</h1>
 
-    <div class="tm-box" id="apps-g" >
-<div class="tm-scroll-content" style="display: flex; justify-content: center; align-items: center;">
+    <div class="tm-box" id="apps-g" style="margin-top: 0; width: 75%;" >
+<div class="tm-scroll-content" style="display: flex; justify-content: space-evenly; align-items: center;">
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" alt="?" height="75px" width="75px" >
@@ -491,25 +492,19 @@
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/MasVoxtmhalf.png?raw=true" alt="?" height="50px" width="125px" >
 
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
-
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
-
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" alt="?" height="75px" width="75px" >
-
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/DevForms.png?raw=true" alt="?" height="75px" width="75px" >
-
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/MasVoxtmhalf.png?raw=true" alt="?" height="50px" width="125px" >
-
-
 
 
 </div></div>
-</div>
+</div></div>
 
-<footer style="display: flex; justify-content: center; align-items: center; flex-direction: row; gap: 5px; height: 10px;"> <img src="https://github.com/WolfVox/Logos/blob/main/W.png?raw=true" alt="" width="30px" height="30px"><div style="display: flex; width: 20%; flex-direction: row; justify-content: center; align-items: center;"> &copy; 2026 WolfVox, Co. </div>
-<div style="width: 100%; display: flex; justify-content: right; margin-left: 5px;">
-    <a href="https://github.com/wolfvoxco"><h3 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: white; width: 10%;">Github</h3></a>
-    <a href="https://www.youtube.com/@WolfVoxCo"><h3 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: white; margin-left: 25px; width: 10%;">Youtube</h3></a>
+<footer style="display: flex; margin-top: 0; justify-content: center; align-items: center; flex-direction: row; gap: 5px; height: 10px;"> <img src="https://github.com/WolfVox/Logos/blob/main/W.png?raw=true" alt="" width="30px" height="30px"><div style="display: flex; width: 20%; flex-direction: row; justify-content: center; align-items: center;"> &copy; 2026 WolfVox, Co. </div>
+<div class="sitemap-col" style="width: 100%; display: flex; justify-content: right; margin-left: 5px;">
+    <a href="https://github.com/wolfvoxco"><h3 style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; color: white; width: 10%;">Github</h3></a>
+    <a href="https://www.youtube.com/@WolfVoxCo"><h3 style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; color: white; margin-left: 25px; width: 10%;">Youtube</h3></a>
 </div>
 </footer> 
 
