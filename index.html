@@ -38,7 +38,34 @@
         }
 
         /* NAVBARS */
-        nav { display: flex; align-items: center; padding: 12px 30px; background: var(--topheader); border-bottom: 1px solid var(--border); justify-content: space-between; position: relative; z-index: 1000; }
+        nav { display: flex; align-items: center; padding: 12px 30px; background: var(--topheader); border-bottom: 1px solid var(--border); justify-content: space-between; position: relative; z-index: 1000; 
+          overflow-x: auto;
+  white-space: nowrap;
+  
+  /* Optional: Hides the scrollbar for a cleaner look on some browsers */
+  -webkit-overflow-scrolling: touch;
+  flex-shrink: 1; 
+        }
+
+.nav::-webkit-scrollbar {
+  height: 1px; /* Height for horizontal scrollbars */
+}
+
+.nav::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.nav::-webkit-scrollbar-thumb {
+  background-color: rgb(55, 55, 55);
+  border-radius: 0; /* Makes the scrollbar edges rounded */
+}
+
+
+/* Ensure the items inside don't shrink to fit the screen */
+.nav > * {
+  flex: 0 0 1;
+} 
+
 .sub-nav { 
   display: flex; 
   gap: 15px; 
@@ -297,8 +324,8 @@
     ;
 
         }
-        .sitemap-col h4 { margin-top: 0; color: #fff; }
-        .sitemap-col a { display: block; color: var(--accent); text-decoration: none; margin-bottom: 8px; font-size: 14px; }
+        .sitemap-col h4 { margin-top: 0; color: #fff; font-size: clamp(.75rem, 1.25vw, 1.75rem); }
+        .sitemap-col a { display: block; color: var(--accent); text-decoration: none; margin-bottom: 8px; font-size: clamp(.5rem, 1.25vw, 1.75rem); }
         .sitemap-col a:hover { color: #fff; }
         footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; background-color: #000 ; border-top: 1px solid var(--border); }
 
@@ -473,7 +500,7 @@
 </div>
 
 <div class="sitemap-container">
-    <div class="SiteMapImage"><img src="https://github.com/WolfVox/wolfvox.github.io/blob/main/WolfVoxLogo.png?raw=true" alt="?" height="125px" width="125px"></div>
+    <div class="SiteMapImage"><img src="https://github.com/WolfVox/wolfvox.github.io/blob/main/WolfVoxLogo.png?raw=true" alt="?" height="125rem" width="125rem"></div> 
     <div class="sitemap-col"><h4>Product</h4><a href="/Forms">Forms</a><a href="/CloudHosting">Hosting</a></div>
     <div class="sitemap-col"><h4>Forms</h4><a href="/Forms/Docs">Docs</a><a href="/Forms/Market">Marketplace</a></div>
     <div class="sitemap-col"><h4>WolfCloud</h4><a href="/CloudHosting/Docs">Docs</a><a href="/CloudHosting/Docs#routing">Routung</a></div>
@@ -485,12 +512,6 @@
 
     <div class="tm-box" id="apps-g" style="margin-top: 0; width: 75%;" >
 <div class="tm-scroll-content" style="display: flex; justify-content: space-evenly; align-items: center;">
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" alt="?" height="75px" width="75px" >
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/DevForms.png?raw=true" alt="?" height="75px" width="75px" >
-<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/MasVoxtmhalf.png?raw=true" alt="?" height="50px" width="125px" >
-
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" alt="?" height="75px" width="75px" >
