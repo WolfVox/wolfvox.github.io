@@ -252,13 +252,51 @@ nav {
     padding: 40px; 
     border-radius: 0px; 
     position: relative; 
-    overflow: hidden; /* Important: Hides the overflowing text */
+    overflow: hidden; 
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+    height: 12vw; 
+    width: 90%;
+    z-index: 99;
+
+    /* The Grid Logic */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    
+    /* This defines the size of the "boxes" */
+    background-size: 30px 31px; 
+}
+
+.apps-frame {
+
+    background-color: #5d00ff ;
+    width: 10%;
+    height: 12vw;
+    font-size: 150% ;
+    padding: 0;
+    margin: 0;
+    padding: 40px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: row;
-    /* Set a specific height for the scroll area */
-    height: 125px; 
+}
+
+.apps-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: row; 
+    flex-grow: 1;
+    width: 100%;
+
+}
+
+.apps-frame h1 {
+    font-size: clamp(2rem,.5vw,1rem);
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 /* The Scrolling Content Wrapper */
@@ -266,7 +304,7 @@ nav {
     display: flex;
     flex-direction: row;
     gap: 20px;
-
+    opacity: 0;
     /* Animation: name | duration | timing | iteration */
     animation: scroll-up 25s linear infinite;
     
@@ -285,17 +323,24 @@ nav {
     /* This controls how far up the fade goes */
     height: 100%; 
     /* Gradient from solid black at the bottom to transparent */
-    background-image: linear-gradient(to right, #000000 5%, transparent 25%,#000000 65%);
+    background-image:
+        linear-gradient(to right, #5d00ff 10%, transparent 40%, transparent 60% , #000000 100%);
+    ;
     
     /* This ensures it sits ON TOP of the text */
     z-index: 99; 
     pointer-events: none; 
 }
 
+
+
+
 /* The Infinite Loop Logic */
-@keyframes scroll-up {
-    0% { transform: translateX(-0%); }
-    100% { transform: translateX(-50%); }
+@keyframes scroll-up {   
+    0% { transform: translateX(0%); }
+    15% {opacity: 1;}
+    100% {opacity: 0;}
+    100% { transform: translateX(-25%); }
 }
 
         /* ANALYTICS SECTION (Alive & Floating) */
@@ -513,18 +558,25 @@ nav {
 </div>
 
 <div class="sitemap-container">
-    <div class="SiteMapImage"><img src="https://github.com/WolfVox/wolfvox.github.io/blob/main/WolfVoxLogo.png?raw=true" alt="?" height="125rem" width="125rem"></div> 
+    <div class="SiteMapImage"><img src="https://github.com/WolfVox/Logos/blob/main/baseTransIcons/transLogoWhite.png?raw=true" alt="?" height="125rem" width="125rem"></div> 
     <div class="sitemap-col"><h4>Product</h4><a href="/Forms">Forms</a><a href="/CloudHosting">Hosting</a></div>
     <div class="sitemap-col"><h4>Forms</h4><a href="/Forms/Docs">Docs</a><a href="/Forms/Market">Marketplace</a></div>
     <div class="sitemap-col"><h4>WolfCloud</h4><a href="/CloudHosting/Docs">Docs</a><a href="/CloudHosting/Docs#routing">Routung</a></div>
     <div class="sitemap-col"><h4>Legal</h4><a href="/Forms/Docs#terms">Privacy</a><a href="/Forms/Docs#rules">Terms & Rules</a></div>
 </div>
-<div style="display: flex; justify-content: center; align-items: center; flex-direction: row; flex-grow: 1;">
-        <h1 id="apps-g" class="sitemap-container" style="padding: 63px; margin: 0; height: 5vw; width: 25%; display: flex; justify-content: center; align-items: center;">Our Apps</h1>
+<div class="apps-container">
+    <div class="apps-frame"> 
+    <h1 id="apps"  >Our Apps</h1>
+    </div>
 
-
-    <div class="tm-box" id="apps-g" style="margin-top: 0; width: 75%;" >
+    <div class="tm-box" id="apps-g"  >
 <div class="tm-scroll-content" style="display: flex; justify-content: space-evenly; align-items: center;">
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" alt="?" height="75px" width="75px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/DevForms.png?raw=true" alt="?" height="75px" width="75px" >
+<img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/MasVoxtmhalf.png?raw=true" alt="?" height="50px" width="125px" >
+
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/Wolfvoxsecondarytm.png?raw=true" alt="?" height="50px" width="125px" >
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
 <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" alt="?" height="75px" width="75px" >
