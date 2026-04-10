@@ -458,6 +458,75 @@ nav {
 .side-menu a:hover {
     color: var(--purple-glow);
 }
+
+.launch-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .launch-btn:hover { background-color: #0056b3; }
+
+        /* Modal Background (The Overlay) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* The Small-Medium Frame */
+        .modal-frame {
+            background: rgb(16, 16, 16);
+            width: 90%;
+            max-width: 400px; /* Limits the "Medium" size */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(43, 43, 43, 0.2);
+            position: relative;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* The List of Apps */
+        .app-list { list-style: none; padding: 0; margin: 0; }
+        .app-item {
+            padding: 12px;
+            border-bottom: 1px solid #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .app-item:last-child { border-bottom: none; display: flex; justify-content: center; align-items: center; }
+        .app-link {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        .app-link:hover { color: #007bff; }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: none; border: none;
+            font-size: 20px; cursor: pointer; color: #888;
+        }
+
     </style>
 </head>
 <body>
@@ -480,6 +549,23 @@ nav {
     <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
     <p style="font-size: 12px; color: var(--text-dim);">support : wolfvoxco@gmail.com</p>
 </div>
+
+    <div class="modal-overlay" id="appModal" onclick="closeFromOutside(event)">
+        <div class="modal-frame">
+            <button class="close-btn" onclick="toggleModal()">&times;</button>
+            <div class="modal-header">More from wolfvox</div>
+            
+            <ul class="app-list">
+                <li class="app-item">
+                    <a href="https://wolfvox.github.io/CloudHosting" class="app-link" target="_blank"><img src="https://github.com/WolfVox/Logos/blob/main/WolfCloud.png?raw=true" height="25px" width="25px"> Wolf Forms</a>
+                </li>
+                <li class="app-item">
+                    <a href="https://wolfvox.github.io/Forms" class="app-link" target="_blank"><img src="https://github.com/WolfVox/Logos/blob/main/DevForms.png?raw=true" height="25px" width="25px"> Wolf Forms</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 
     
         <img style=" margin-right:15px;" src="https://github.com/WolfVox/Logos/blob/main/wolfvoxtm.png?raw=true" alt="?" height="50px" width="145px" >
@@ -513,7 +599,7 @@ nav {
     <a href="/CloudHosting" class="sub-btn"><i class="fa-solid fa-tower-broadcast"></i> Hosting</a>
     <a href="/signin" class="sub-btn"><i class="fa-solid fa-right-to-bracket"></i> Accounts</a>
     <div style="display:flex; justify-content: right; width: 100%;">
-        <a href="#apps-g" class="sub-btn"><i class="fa-solid fa-grip"></i> Apps</a>
+        <a onclick="toggleModal()" class="sub-btn"><i class="fa-solid fa-grip"></i> Apps</a>
     </div>
 </div>
 
@@ -778,6 +864,20 @@ function logout() {
             }
         });
     }
+
+    const modal = document.getElementById('appModal');
+
+        function toggleModal() {
+            const isVisible = modal.style.display === 'flex';
+            modal.style.display = isVisible ? 'none' : 'flex';
+        }
+
+        // Close if user clicks the dark area outside the box
+        function closeFromOutside(event) {
+            if (event.target === modal) {
+                toggleModal();
+            }
+        }
 </script>
 
 </body>
